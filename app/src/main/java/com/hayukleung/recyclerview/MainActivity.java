@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import com.hayukleung.recyclerview.ItemTouchHelper.ItemTouchHelperFragment;
+import com.hayukleung.recyclerview.diffutil.DiffUtilFragment;
 
 /**
  * RecyclerView
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     if (savedInstanceState == null) {
       FragmentManager fragmentManager = getSupportFragmentManager();
       FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-      fragmentTransaction.add(R.id.content, new ItemTouchHelperFragment());
+      fragmentTransaction.add(R.id.content, new DiffUtilFragment());
       fragmentTransaction.commit();
     }
   }
