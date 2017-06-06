@@ -1,4 +1,4 @@
-package com.hayukleung.recyclerview.diffutil;
+package com.hayukleung.recyclerview.DiffUtil;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,14 +30,11 @@ import java.util.Random;
 
 public class DiffUtilFragment extends Fragment {
   private static final int COUNT = 10;
-
+  private final Lock mLock = new Lock();
   private RecyclerView mRecyclerView;
-
   private List<DiffUtilItem> mDiffUtilItemList = new ArrayList<>(COUNT);
   private List<DiffUtilItem> mDiffUtilItemListNew = new ArrayList<>(COUNT);
-
   private UIHandler mUIHandler;
-  private final Lock mLock = new Lock();
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -113,42 +110,6 @@ public class DiffUtilFragment extends Fragment {
   }
 
   /**
-   * 通知 UI 线程刷新
-   *
-   * @param diffResult
-   * @param type 1 - add 2 - remove
-   */
-  private void notifyRefresh(DiffUtil.DiffResult diffResult, int type) {
-    Message message = new Message();
-    message.what = 0;
-    message.arg1 = type;
-    message.obj = diffResult;
-    mUIHandler.sendMessage(message);
-  }
-
-  private void refresh(DiffUtil.DiffResult diffResult, final int type) {
-
-    diffResult.dispatchUpdatesTo(mRecyclerView.getAdapter());
-    mUIHandler.postDelayed(new Runnable() {
-      @Override public void run() {
-        switch (type) {
-          case 1: {
-            // add
-            mRecyclerView.smoothScrollToPosition(mDiffUtilItemList.size() - 1);
-            break;
-          }
-          case 2: {
-            // remove
-            mRecyclerView.smoothScrollToPosition(0);
-            break;
-          }
-        }
-        mLock.setLock(false);
-      }
-    }, 200);
-  }
-
-  /**
    * 生产
    */
   private void add() {
@@ -203,6 +164,42 @@ public class DiffUtilFragment extends Fragment {
 
     notifyRefresh(diffResult, 2);
     return true;
+  }
+
+  /**
+   * 通知 UI 线程刷新
+   *
+   * @param diffResult
+   * @param type 1 - add 2 - remove
+   */
+  private void notifyRefresh(DiffUtil.DiffResult diffResult, int type) {
+    Message message = new Message();
+    message.what = 0;
+    message.arg1 = type;
+    message.obj = diffResult;
+    mUIHandler.sendMessage(message);
+  }
+
+  private void refresh(DiffUtil.DiffResult diffResult, final int type) {
+
+    diffResult.dispatchUpdatesTo(mRecyclerView.getAdapter());
+    mUIHandler.postDelayed(new Runnable() {
+      @Override public void run() {
+        switch (type) {
+          case 1: {
+            // add
+            mRecyclerView.smoothScrollToPosition(mDiffUtilItemList.size() - 1);
+            break;
+          }
+          case 2: {
+            // remove
+            mRecyclerView.smoothScrollToPosition(0);
+            break;
+          }
+        }
+        mLock.setLock(false);
+      }
+    }, 200);
   }
 
   static class UIHandler extends Handler {

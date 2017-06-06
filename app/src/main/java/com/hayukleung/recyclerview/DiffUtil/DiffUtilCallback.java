@@ -1,4 +1,4 @@
-package com.hayukleung.recyclerview.diffutil;
+package com.hayukleung.recyclerview.DiffUtil;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.hayukleung.recyclerview.diffutil;
+package com.hayukleung.recyclerview.DiffUtil;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package com.hayukleung.recyclerview.diffutil;
+package com.hayukleung.recyclerview.DiffUtil;
 
 import java.io.Serializable;
 
@@ -32,6 +32,10 @@ public class DiffUtilItem implements Serializable {
     this.name = name;
   }
 
+  @Override public int hashCode() {
+    return id;
+  }
+
   @Override public boolean equals(Object obj) {
     if (null == obj) {
       return false;
@@ -40,9 +44,5 @@ public class DiffUtilItem implements Serializable {
       return false;
     }
     return id == ((DiffUtilItem) obj).id;
-  }
-
-  @Override public int hashCode() {
-    return id;
   }
 }
