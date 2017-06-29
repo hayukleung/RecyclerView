@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 
 public class DemoLayoutManager extends RecyclerView.LayoutManager {
 
-  private static final String TAG = "lzy";
   // 保存所有item的偏移信息
   private SparseArrayCompat<Rect> itemFrames = new SparseArrayCompat<>();
   // 总的高度和宽度
@@ -28,9 +27,11 @@ public class DemoLayoutManager extends RecyclerView.LayoutManager {
   private int horizontalOffset; // 水平方向的偏移
 
   @Override public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+
     if (0 >= getItemCount()) {
       return;
     }
+
     detachAndScrapAttachedViews(recycler);
 
     int totalHeight = 0;
@@ -131,9 +132,11 @@ public class DemoLayoutManager extends RecyclerView.LayoutManager {
   // 取出需要的显示出来
   private void fill(RecyclerView.Recycler recycler, RecyclerView.State state) {
     // 获得屏幕的边界信息
+    // 容差
+    int delta = 10;
     Rect displayFrame =
-        new Rect(horizontalOffset, verticalOffset, horizontalOffset + getHorizontalSpace(),
-            verticalOffset + getVerticalSpace());
+            new Rect(horizontalOffset - delta, verticalOffset - delta, horizontalOffset + getHorizontalSpace() + delta,
+                    verticalOffset + getVerticalSpace() + delta);
 
     // 滑出屏幕回收到缓存中
     Rect childFrame = new Rect();
